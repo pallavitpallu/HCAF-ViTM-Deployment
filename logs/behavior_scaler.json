@@ -1,0 +1,20 @@
+{
+  "columns": [
+    "ear",
+    "mar",
+    "head_horizontal",
+    "head_vertical"
+  ],
+  "mean": {
+    "ear": 0.4481950624216335,
+    "mar": 0.039752307252456986,
+    "head_horizontal": 0.02603430113493272,
+    "head_vertical": 0.017110560190566993
+  },
+  "std": {
+    "ear": 0.0795716727465976,
+    "mar": 0.09488167879628696,
+    "head_horizontal": 0.027018840232380967,
+    "head_vertical": 0.01637465869057536
+  }
+}
