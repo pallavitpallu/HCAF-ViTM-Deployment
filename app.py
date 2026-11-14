@@ -18,6 +18,7 @@ from face_detector import create_face_landmarker, detect_face
 from scaler import scale_features
 from style import apply_custom_style
 from streamlit_autorefresh import st_autorefresh
+from huggingface_hub import hf_hub_download
 
 # --------------------------------------------------
 # APPLICATION CONFIGURATION
@@ -107,12 +108,25 @@ def draw_camera_text(image, lines):
 # --------------------------------------------------
 
 @st.cache_resource
+def download_checkpoint():
+
+    checkpoint_path = hf_hub_download(
+        repo_id="Pallavitpallu/HCAF-ViTM-Driver-Drowsiness",
+        filename="best_model.pt"
+    )
+
+    return checkpoint_path
+
+
+@st.cache_resource
 def load_model():
 
     model = HCAFViTM()
 
+    checkpoint_path = download_checkpoint()
+
     checkpoint = torch.load(
-        CHECKPOINT_PATH,
+        checkpoint_path,
         map_location=DEVICE,
         weights_only=False
     )
@@ -381,14 +395,9 @@ st.info(
 # CHECKPOINT VALIDATION
 # --------------------------------------------------
 
-if not CHECKPOINT_PATH.exists():
-
-    st.error(
-        f"Model checkpoint not found: {CHECKPOINT_PATH}"
-    )
-
-    st.stop()
-
+# --------------------------------------------------
+# CHECKPOINT VALIDATION
+# --------------------------------------------------
 
 try:
 
@@ -402,7 +411,6 @@ except Exception as error:
 
     st.error(f"Model loading failed: {error}")
     st.stop()
-
 
 # --------------------------------------------------
 # LIVE CAMERA
